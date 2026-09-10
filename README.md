@@ -1,2 +1,228 @@
 # my-story
 my gift
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكاننا الخاص ❤️</title>
+    <style>
+        :root { --warm-bg: #fdf6f6; --soft-text: #5c4d4d; --highlight: #d4a373; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--warm-bg); color: var(--soft-text); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; position: relative; }
+        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px; width: 100%; text-align: center; z-index: 10; position: relative; }
+        #content-area { display: none; }
+        h1, h3 { color: #8e7d7d; }
+        
+        .apology-box { background: #fffaf5; padding: 20px; border-right: 5px solid var(--highlight); border-radius: 15px; text-align: right; line-height: 1.8; margin: 20px 0; font-size: 17px; }
+        .poem-box { background: #fdf0ed; padding: 20px; border-radius: 15px; text-align: center; line-height: 2; font-size: 17px; color: #7a4b4b; margin: 20px 0; border: 1px dashed var(--highlight); }
+        
+        input { padding: 12px; border: 1px solid #ddd; border-radius: 10px; width: 80%; text-align: center; font-size: 16px; outline: none; }
+        button { background: var(--highlight); color: white; border: none; padding: 12px 30px; border-radius: 10px; margin-top: 15px; cursor: pointer; transition: 0.3s; font-size: 16px; font-weight: bold; }
+        button:hover { background: #c09060; }
+        
+        /* مشغل الأغنية */
+        .music-box { background: #fbf0f2; padding: 15px; border-radius: 18px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .music-box audio { width: 100%; margin-top: 8px; border-radius: 10px; }
+
+        .video-wrapper { margin-top: 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .my-video { width: 100%; max-height: 350px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); outline: none; background-color: #000; }
+
+        .messages-container { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; text-align: right; }
+        .chat-bubble { background: #f7ece1; padding: 12px 18px; border-radius: 18px 18px 0px 18px; color: #4a3e3e; font-size: 15px; line-height: 1.5; max-width: 85%; align-self: flex-end; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .chat-bubble.her { background: #f0f0f0; border-radius: 18px 18px 18px 0px; align-self: flex-start; color: #333; }
+
+        /* معرض الصور */
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .gallery img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.2s; }
+        .gallery img:hover { transform: scale(1.03); }
+        
+        .gallery img.full-width { grid-column: span 2; height: auto; max-height: 320px; }
+
+        .lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center; }
+        .lightbox-content { max-width: 95%; max-height: 85%; object-fit: contain; border-radius: 10px; }
+        .close-lightbox { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+
+        .heart { position: fixed; top: -50px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 1; }
+            80% { opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="login-area">
+        <h2>عايز أقولك حاجة مهمة.. ✨</h2>
+        <input type="password" id="pass" placeholder="كلمة السر...">
+        <br>
+        <button onclick="checkPass()">افتح الرسالة ❤️</button>
+    </div>
+
+    <div class="card" id="content-area">
+        <h1>3 سنين سوا.. ❤️✨</h1>
+        
+        <div class="music-box">
+            <span style="font-size: 15px; font-weight: bold; color: #7a4b4b;">🎵 Radiohead - No Surprises (Slowed+Reverb) ❤️</span>
+            <audio id="bg-music" controls loop>
+                <source src="https://files.catbox.moe/eemxfc.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل الصوت.
+            </audio>
+        </div>
+
+        <div class="apology-box">
+            <p><strong>كل سنة وإحنا سوا يا أجمل حاجة حصلتلي في حياتي.. ❤️</strong></p>
+            <p>النهار ده 15 سبتمبر بنكمل 3 سنين مع بعض.. 3 سنين بكل لحظة حلوة عشناها، وبكل خطوة عدينها سوا. النهار ده مش مجرد ذكرى، ده تأكيد إن حبنا بيكبر كل يوم عن اللي قبله، وإن وجودك بيبق أحلي حاجة ف يومي.</p>
+            <p>شكراً إنك في حياتي، وشكراً على كل كلمة حلوة وضحكة طالعة من القلب عشناها سوا.. أوعدك هفضل جنبك ونكمل سنين جاية كتير كلها حب وأمل، ونفضل دايماً مع بعض ويارب تكونى من نصيبي.</p>
+        </div>
+
+        <div class="poem-box">
+            ألف سين راء <br>
+            أو ممكن أقول <strong>إسراء</strong> ❤️<br>
+            في عينيها تلقى براء<br>
+            والإثبات إنك لها بتشتاق<br>
+            لو ع الجنان هتلاقي <br>
+            لو ع الهزار هتلاقي <br>
+            لو ع الحب والله ما تلقى فراق<br>
+            أحلى حاجة شافتها عيني <br>
+            ودايماً بتحليلي سنيني <br>
+            يابخت اللي إسراء من نصيبه <br>
+            ويارب أكون أنا المحظوظ <br>
+            بتمنى طول عمري أراضيكي <br>
+            عشان بس أشوف ضحكة من عينيكي <br>
+            مقدرش أخسرك أبداً <br>
+            وازاي ممكن أعمل كدة؟<br>
+            من ساعة ما شوفتك وأنا قلبي ملهوف <br>
+            خطفتيني من نظرة <br>
+            بحبك لحد ما أموت <br>
+            ولو سكتت الحروف <br>
+            بحبك دايماً بقلبي <br>
+            لو بس تكوني جنبي <br>
+            بحبك لآخر العمر ✨
+        </div>
+
+        <h3>فيديوهات ذكرياتنا 🎥</h3>
+        <div class="video-wrapper">
+            <video class="my-video" controls playsinline>
+                <source src="https://files.catbox.moe/qpmb2g.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <video class="my-video" controls playsinline>
+                <source src="https://files.catbox.moe/1bb1fg.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <video class="my-video" controls playsinline>
+                <source src="https://files.catbox.moe/xny7lh.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <!-- الفيديو الجديد -->
+            <video class="my-video" controls playsinline>
+                <source src="https://files.catbox.moe/pwvqn4.mp4" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+        </div>
+
+        <h3>رسايل من ذاكرتنا 💬❤️</h3>
+        <div class="messages-container">
+            <div class="chat-bubble her">"الله الله بحبك أوي ❤️"</div>
+            <div class="chat-bubble">"أنا كمان بحبك يا إييسااا ✨"</div>
+        </div>
+
+        <h3 style="margin-top: 25px;">أجمل اللحظات 📸</h3>
+        <div class="gallery">
+            <img src="https://files.catbox.moe/qhmx04.png" alt="ذكريات" onclick="openLightbox(this.src)">
+            <img src="https://files.catbox.moe/soaxyi.png" alt="ذكريات" onclick="openLightbox(this.src)">
+            <img src="https://files.catbox.moe/35aod6.png" class="full-width" alt="ذكريات" onclick="openLightbox(this.src)">
+            <img src="https://files.catbox.moe/ep02t5.jpg" class="full-width" alt="ذكريات" onclick="openLightbox(this.src)">
+            <img src="https://files.catbox.moe/e2m58k.png" class="full-width" alt="ذكريات" onclick="openLightbox(this.src)">
+        </div>
+    </div>
+
+    <div id="lightboxOverlay" class="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightboxImg">
+    </div>
+
+    <script>
+        function checkPass() {
+            if(document.getElementById('pass').value === 'esoo') {
+                launchMassiveHearts();
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('content-area').style.display = 'block';
+                
+                const music = document.getElementById('bg-music');
+                if(music) {
+                    music.play().catch(e => console.log("Autoplay blocked by browser policy"));
+                }
+            } else { 
+                alert('كلمة السر غلط.. حاولي تاني يا esoo'); 
+            }
+        }
+
+        const music = document.getElementById('bg-music');
+        const videos = document.querySelectorAll('.my-video');
+
+        videos.forEach(video => {
+            video.addEventListener('play', () => {
+                videos.forEach(v => {
+                    if (v !== video && !v.paused) {
+                        v.pause();
+                    }
+                });
+
+                if (music && !music.paused) {
+                    music.pause();
+                    music.dataset.wasPlaying = "true";
+                }
+            });
+
+            video.addEventListener('ended', () => {
+                resumeMusic();
+            });
+            video.addEventListener('pause', () => {
+                resumeMusic();
+            });
+        });
+
+        function resumeMusic() {
+            let anyVideoPlaying = Array.from(videos).some(v => !v.paused && !v.ended);
+            if (!anyVideoPlaying && music && music.dataset.wasPlaying === "true") {
+                music.play().catch(e => console.log("Autoplay blocked"));
+            }
+        }
+
+        function launchMassiveHearts() {
+            const heartTypes = ['❤️', '💕', '💖', '💗', '✨', '🌸', '❤️'];
+            const totalHearts = 120;
+
+            for (let i = 0; i < totalHearts; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+                    heart.style.left = Math.random() * 95 + 'vw';
+                    
+                    const duration = (Math.random() * 2.5 + 2);
+                    const size = (Math.random() * 25 + 18);
+                    
+                    heart.style.animationDuration = duration + 's';
+                    heart.style.fontSize = size + 'px';
+
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => { heart.remove(); }, duration * 1000);
+                }, i * 40);
+            }
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxOverlay').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
