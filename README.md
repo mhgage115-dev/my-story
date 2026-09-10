@@ -1,5 +1,3 @@
-# my-story
-my gift
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
